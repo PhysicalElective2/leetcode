@@ -1,2 +1,2 @@
 ## leetcode
-#### 包括牛客网和leeecode 的算法，python java 都有
+#### 包括牛客网和leeecode 的算法，python
