@@ -1,5 +1,42 @@
 import math
+class TreeNode:
+    def __init__(self, x):
+        self.val = x
+        self.left = None
+        self.right = None
 class Solution:
+
+    def HasSubtree(self, pRoot1, pRoot2):
+        #遍历这棵树，找到相同的节点，然后一块继续遍历这棵树
+        res=False
+        if pRoot1 and pRoot2:
+            if pRoot1.val==pRoot2.val:
+                res=self.isSame(pRoot1,pRoot2)
+            #以下看着繁琐，其实实现了剪枝
+            if not res:
+                res=self.isSame(pRoot1.left,pRoot2)
+            if not res:
+                res=self.isSame(pRoot1.right,pRoot2)
+            return res
+
+
+
+
+    def isSame(self,pRoot1,pRoot2):
+        """
+        判断两棵树是不是相等,这里不要求是相等的，题目要求的是子结构，哎
+        :param pRoot1:
+        :param pRoot2:
+        :return:
+        """
+        if not pRoot2:
+            return True
+        if not pRoot1:
+            return False
+        #还得判断这个值是不是相等呢,这个参考代码真的很漂亮
+        return pRoot1.val == pRoot2.val and self.isSame(pRoot1.left, pRoot2.left) and self.isSame(pRoot1.right, pRoot2.right)
+
+
     def GetUglyNumber_Solution2(self,index):
         """
         other perfact way
