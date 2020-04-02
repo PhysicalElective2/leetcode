@@ -5,6 +5,33 @@ class TreeNode:
         self.left = None
         self.right = None
 class Solution:
+    def FirstNotRepeatingChar(self, s):
+        """
+        在一个字符串(0<=字符串长度<=10000，全部由字母组成)
+        中找到第一个只出现一次的字符,并返回它的位置, 如果没有则返回 -1（需要区分大小写）.
+        s  是个字符串
+        而且返回的应该是位置
+        妈的，还可能只出现两次
+        其实可以用下面这一句，如果Java还可以lastIndexOf()
+        s.count(s[i]) == 1
+        :param s:
+        :return:
+        """
+        list=[]# 存字符
+        res=[] # 存数量 其实是sum
+        resss=[]
+        for index,char in enumerate(s):
+            if char in list:
+                res[list.index(char)]+=1
+            else:
+                list.append(char)
+                res.append(1)
+                resss.append(index)
+        #遍历数组
+        for index,num in enumerate(res):
+            if num ==1:
+                return resss[index]
+        return -1
 
     def HasSubtree(self, pRoot1, pRoot2):
         #遍历这棵树，找到相同的节点，然后一块继续遍历这棵树
