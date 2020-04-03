@@ -27,6 +27,8 @@ if __name__=="__main__":
     print(s.HasSubtree(a,another))
     ss="googgle"
     print(s.FirstNotRepeatingChar(ss))
+    print( s.InversePairs([1,2,3,4,5,6,7,0]))
+
     # for i in range(1,100):
     #     if(s.isUgly(i)):
             #print(str(i) + " " + str(s.isPrime(i)))
