@@ -8,7 +8,62 @@ class TreeNode:
         self.right = None
 
 
+
+
+
 class Solution:
+    def depth(self,pRoot):
+        """
+        get the depth
+        :param pRoot:
+        :return:
+        """
+        if not pRoot:
+            return 0
+        return max(self.depth(pRoot.left),self.depth(pRoot.right))+1
+
+
+    def IsBalanced_Solution2(self,pRoot):
+        if not pRoot:
+            return True
+        if abs(self.depth(pRoot.left)-self.depth(pRoot.right))>1:
+            return False
+        return self.IsBalanced_Solution2(pRoot.left) and self.IsBalanced_Solution2(pRoot.right)
+
+
+
+    depths=[]
+    def dfs(self,pRoot,depth):
+        if not pRoot:
+            #this is leaf node
+            self.depths.append(depth)
+            return
+        self.dfs(pRoot.left,depth+1)
+        self.dfs(pRoot.right,depth+1)
+
+    def IsBalanced_Solution(self, pRoot):
+        """
+        解决问题的思想就有问题，平衡二叉树会出现，叶子节点层次数差大于二，但是依然是平衡二叉树
+        determine if a tree is an equilibrium binary tree
+        need dfs
+        :param pRoot:
+        :return:
+        """
+        self.dfs(pRoot,0)
+        #determine the list of depth
+        min_ = self.depths[0]
+        max_ = self.depths[0]
+        for item in self.depths:
+            print(item)
+            min_=min(min_,item)
+            max_=max(max_,item)
+        if max_-min_>=2:
+            return False
+        else:
+            return True
+
+
+
     def bigger(self,num,list):
         print(list)
         count=0

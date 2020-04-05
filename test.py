@@ -28,6 +28,8 @@ if __name__=="__main__":
     ss="googgle"
     print(s.FirstNotRepeatingChar(ss))
     print( s.InversePairs([1,2,3,4,5,6,7,0]))
+    print("tree")
+    print(s.IsBalanced_Solution2(a))
 
     # for i in range(1,100):
     #     if(s.isUgly(i)):
