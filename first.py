@@ -8,10 +8,112 @@ class TreeNode:
         self.right = None
 
 
-
-
-
 class Solution:
+    def FindContinuousSequence5(self, tsum):
+        # write code here,不存储temp sum 的双指针，实在是搞不明白自己哪里不对了啊
+        if not tsum:
+            return []
+        p1, p2 = 1, 2
+        res = []
+        while p1 < p2:
+            cur = (p1 + p2) * (p2 - p1 + 1) // 2
+            if cur == tsum:
+                arr = []
+                for item in range(p1, p2 + 1):
+                    arr.append(item)
+                res.append(arr)
+                p2 += 1
+            elif cur < tsum:
+                p2 += 1
+            else:
+                p1 += 1
+        return res
+
+    def FindContinuousSequence4(self, tsum):
+        #暴力破解
+        if tsum<3:
+            return []
+        s=[]
+        for i in range(1,tsum):
+            tems=0
+            j=i
+            while tems<tsum:
+                tems += j
+                j+=1
+
+            if tems==tsum:
+                s.append(range(i,j))
+        return s
+
+    def FindContinuousSequence3(self, tsum):
+        #存储temp sum 的双指针
+        if tsum < 3:
+            return []
+        small = 1
+        big = 2
+        middle = (tsum + 1) /2
+        curSum = small + big
+        output = []
+        while small < middle:
+            if curSum == tsum:
+                output.append(range(small, big + 1))
+                big += 1
+                curSum += big
+            elif curSum > tsum:
+                curSum -= small
+                small += 1
+            else:
+                big += 1
+                curSum += big
+        return output
+
+    def FindContinuousSequence2(self, tsum):
+        """
+        上一个就是不行啊，无奈，我明明用了200个测试用例都可以
+        :param tsum:
+        :return:
+        """
+        res=[]
+        if tsum <0:
+            return res
+        n=2
+        while (n*n+1<=2*tsum):
+            x0 = (2 *tsum + n - n ** 2) / (2 * n)
+            if math.floor(x0)==x0:
+                x0=math.floor(x0)
+                #那么这个就是要的答案
+                res.append(range(x0,x0+n))
+            n+=1
+        res2 = []
+        for item in range(len(res)):
+            res2.append(res.pop())
+        return res2
+
+
+    def FindContinuousSequence(self, tsum):
+        """
+        和 为s 的连续正序列
+        :param tsum:
+        :return:
+        """
+        # first ,get  the biggest n
+        max_n = 2 * tsum **0.5
+        res=[]
+        for i in range(2,math.floor(max_n)+1):
+
+            tempres=[]
+            tempsum = i *(i+1) / 2
+            for ii in range(math.ceil(tsum/i)):
+                if tempsum+ii*i ==tsum:
+
+                    for iii in range(i):
+                        tempres.append(ii+iii+1)
+                    res.append(tempres)
+
+        res2=[]
+        for item in range(len(res)):
+            res2.append(res.pop())
+        return res2
     def depth(self,pRoot):
         """
         get the depth
