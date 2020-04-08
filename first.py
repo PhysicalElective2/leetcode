@@ -9,6 +9,90 @@ class TreeNode:
 
 
 class Solution:
+    def __init__(self):
+        #也可以用两个数组
+        self.chr=[]
+        self.count=[]
+    def FirstAppearingOnce(self):
+        for i, item in enumerate(self.count):
+            if item==1:
+                return self.chr[i]
+        return '#'
+    def Insert(self, char):
+        hava=False
+        for i,item in enumerate(self.chr):
+            if item==char:
+                self.count[i]+=1
+                hava=True
+        if not hava:
+            self.chr.append(char)
+            self.count.append(1)
+
+    def match(self, s, pattern):
+        """
+        字符串匹配
+        模式中的字符'.'表示任意一个字符，而'*'表示它前面的字符可以出现任意次（包含0次）
+        思想有问题，这就不可能通过
+        有些测试案例就有问题，以后在做。。。。
+        "aa"
+        "a*"
+        :param s:
+        :param pattern:
+        :return:
+        """
+        if s==pattern:
+            return True
+        i=0
+        j=0
+        while i<len(s) and j<len(pattern):
+            if s[i]==pattern[j] or pattern[j]=='.':
+                i+=1
+                j+=1
+            elif j+1<len(pattern) and pattern[j+1]=='*': # 这里会数组越界
+                while s[i]==pattern[j]:
+                    i+=1
+                j+=2
+            else:
+                return False
+        #没有处理完,还剩b*
+        if j!=len(pattern) and pattern[j + 1] == '*':
+            return True
+        return i ==len(s) and j==len(pattern)
+
+
+
+    def multiply(self, A):
+        B=[]
+        for i in A:
+            B.append(1)
+        for i,item in enumerate(B):
+            for j,jtem in enumerate(A):
+                if i!=j:
+                    B[i] *= A[j]
+        return B
+    def IsContinuous(self, numbers):
+        """扑克牌顺子
+        如果没有0
+        如果有重复 false
+        如果
+        """
+        """这个意义确实不大啊"""
+        if not numbers:
+            return False
+        if 0 not in numbers:
+            return len(numbers) == len(set(numbers)) and max(numbers)-min(numbers)==4
+        else:
+            #有大小王
+            kingNum=0
+            for item in numbers:
+                if item ==0:
+                    kingNum+=1
+            numbers.sort()
+            return len(numbers[kingNum:]) == len(set(numbers[kingNum:])) and max(numbers[kingNum:]) - min(numbers[kingNum:]) <= 4
+
+
+
+
     def FindContinuousSequence5(self, tsum):
         # write code here,不存储temp sum 的双指针，实在是搞不明白自己哪里不对了啊
         if not tsum:
