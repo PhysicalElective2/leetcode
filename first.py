@@ -6,9 +6,43 @@ class TreeNode:
         self.val = x
         self.left = None
         self.right = None
+class TreeLinkNode:
+    def __init__(self, x):
+        self.val = x
+        self.left = None
+        self.right = None
+        self.next = None
 
 
 class Solution:
+    def In_order_traversal(self,p):
+        if p.left:
+            self.In_order_traversal(p.left)
+
+    def GetNext(self, pNode):
+        """
+        In-order traversal
+        must get the rootnode first
+
+        :param pNode:
+        :return:
+        """
+        if not pNode:
+            return pNode
+        if pNode.right:
+            left1=pNode.right
+            while left1.left:
+                left1=left1.left
+            return left1
+        while pNode.next:
+            temp =pNode.next
+            if temp.left==pNode:
+                return temp
+            pNode=temp
+        return None
+
+
+
     def __init__(self):
         #也可以用两个数组
         self.chr=[]
