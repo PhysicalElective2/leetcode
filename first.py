@@ -1,4 +1,5 @@
 import math
+import queue
 
 
 class TreeNode:
@@ -6,6 +7,8 @@ class TreeNode:
         self.val = x
         self.left = None
         self.right = None
+
+
 class TreeLinkNode:
     def __init__(self, x):
         self.val = x
@@ -15,7 +18,94 @@ class TreeLinkNode:
 
 
 class Solution:
-    def In_order_traversal(self,p):
+    def Print2(self,pRoot):
+        """
+        还是别人的办法好啊。。。
+        :param pRoot:
+        :return:
+        """
+        res=[]
+        if not pRoot:
+            return res
+        temp=[pRoot]
+        while temp:
+            size=len(temp)
+            row=[]
+            for i in temp:
+                row.append(i.val)
+            res.append(row)
+            for i in range(size):
+                node=temp.pop(0)
+                if node.left:
+                    temp.append(node.left)
+                if node.right:
+                    temp.append(node.right)
+        return res
+
+    def Print(self, pRoot):
+        """
+        从上到下按层打印二叉树，同一层结点从左至右输出。每一层输出一行。
+        请检查是否存在语法错误或者数组越界非法访问等情况
+        难以理解我哪里错了
+        不过通过这个题目，也感觉到了自己思维的局限性，可以不通过队列实现二叉树的层次遍历
+        :param pRoot:
+        :return:
+        """
+        if not pRoot:
+            return [[]]
+        q = queue.Queue()
+        deep = []
+        q.put(pRoot)
+        deep.append(1)
+        res=[]
+        while(not q.empty()):
+            temp=q.get()
+            res.append(temp)
+            if temp.left:
+                q.put(temp.left)
+                deep.append(deep[res.index(temp)]+1)
+            if temp.right:
+                q.put(temp.right)
+                deep.append(deep[res.index(temp)] + 1)
+        i=0
+        res2=[] #二维数组
+        res1=[]
+        while i < len(res):
+            res1.append(res[i].val)
+            if i+1<len(res) and deep[i]!=deep[i+1]:
+                res2.append(res1)
+                res1=[]
+            i+=1
+        #一维数组还没遇到终点，就结束了
+        if len(res1)>0:
+            res2.append(res1)
+        return res2
+
+
+
+
+    def isSymmetrical(self, pRoot):
+        """
+        遍历，判断每一个节点的左右子树,不要求递归对称,这个算法可以剪枝
+        :param pRoot:
+        :return:
+        """
+
+        def is_same(p1, p2):
+            if not p1 and not p2:
+                return True
+            if not p1 and p2:
+                return False
+            if not p2 and p1:
+                return False
+            # 这里可以实现剪枝，不用，截断了直接
+            return p1.val == p2.val and is_same(p1.left, p2.right) and is_same(p1.right, p2.left)
+
+        if not pRoot:
+            return True
+        return is_same(pRoot.left, pRoot.right)
+
+    def In_order_traversal(self, p):
         if p.left:
             self.In_order_traversal(p.left)
 
@@ -30,34 +120,34 @@ class Solution:
         if not pNode:
             return pNode
         if pNode.right:
-            left1=pNode.right
+            left1 = pNode.right
             while left1.left:
-                left1=left1.left
+                left1 = left1.left
             return left1
         while pNode.next:
-            temp =pNode.next
-            if temp.left==pNode:
+            temp = pNode.next
+            if temp.left == pNode:
                 return temp
-            pNode=temp
+            pNode = temp
         return None
 
-
-
     def __init__(self):
-        #也可以用两个数组
-        self.chr=[]
-        self.count=[]
+        # 也可以用两个数组
+        self.chr = []
+        self.count = []
+
     def FirstAppearingOnce(self):
         for i, item in enumerate(self.count):
-            if item==1:
+            if item == 1:
                 return self.chr[i]
         return '#'
+
     def Insert(self, char):
-        hava=False
-        for i,item in enumerate(self.chr):
-            if item==char:
-                self.count[i]+=1
-                hava=True
+        hava = False
+        for i, item in enumerate(self.chr):
+            if item == char:
+                self.count[i] += 1
+                hava = True
         if not hava:
             self.chr.append(char)
             self.count.append(1)
@@ -74,36 +164,35 @@ class Solution:
         :param pattern:
         :return:
         """
-        if s==pattern:
+        if s == pattern:
             return True
-        i=0
-        j=0
-        while i<len(s) and j<len(pattern):
-            if s[i]==pattern[j] or pattern[j]=='.':
-                i+=1
-                j+=1
-            elif j+1<len(pattern) and pattern[j+1]=='*': # 这里会数组越界
-                while s[i]==pattern[j]:
-                    i+=1
-                j+=2
+        i = 0
+        j = 0
+        while i < len(s) and j < len(pattern):
+            if s[i] == pattern[j] or pattern[j] == '.':
+                i += 1
+                j += 1
+            elif j + 1 < len(pattern) and pattern[j + 1] == '*':  # 这里会数组越界
+                while s[i] == pattern[j]:
+                    i += 1
+                j += 2
             else:
                 return False
-        #没有处理完,还剩b*
-        if j!=len(pattern) and pattern[j + 1] == '*':
+        # 没有处理完,还剩b*
+        if j != len(pattern) and pattern[j + 1] == '*':
             return True
-        return i ==len(s) and j==len(pattern)
-
-
+        return i == len(s) and j == len(pattern)
 
     def multiply(self, A):
-        B=[]
+        B = []
         for i in A:
             B.append(1)
-        for i,item in enumerate(B):
-            for j,jtem in enumerate(A):
-                if i!=j:
+        for i, item in enumerate(B):
+            for j, jtem in enumerate(A):
+                if i != j:
                     B[i] *= A[j]
         return B
+
     def IsContinuous(self, numbers):
         """扑克牌顺子
         如果没有0
@@ -114,18 +203,16 @@ class Solution:
         if not numbers:
             return False
         if 0 not in numbers:
-            return len(numbers) == len(set(numbers)) and max(numbers)-min(numbers)==4
+            return len(numbers) == len(set(numbers)) and max(numbers) - min(numbers) == 4
         else:
-            #有大小王
-            kingNum=0
+            # 有大小王
+            kingNum = 0
             for item in numbers:
-                if item ==0:
-                    kingNum+=1
+                if item == 0:
+                    kingNum += 1
             numbers.sort()
-            return len(numbers[kingNum:]) == len(set(numbers[kingNum:])) and max(numbers[kingNum:]) - min(numbers[kingNum:]) <= 4
-
-
-
+            return len(numbers[kingNum:]) == len(set(numbers[kingNum:])) and max(numbers[kingNum:]) - min(
+                numbers[kingNum:]) <= 4
 
     def FindContinuousSequence5(self, tsum):
         # write code here,不存储temp sum 的双指针，实在是搞不明白自己哪里不对了啊
@@ -148,28 +235,28 @@ class Solution:
         return res
 
     def FindContinuousSequence4(self, tsum):
-        #暴力破解
-        if tsum<3:
+        # 暴力破解
+        if tsum < 3:
             return []
-        s=[]
-        for i in range(1,tsum):
-            tems=0
-            j=i
-            while tems<tsum:
+        s = []
+        for i in range(1, tsum):
+            tems = 0
+            j = i
+            while tems < tsum:
                 tems += j
-                j+=1
+                j += 1
 
-            if tems==tsum:
-                s.append(range(i,j))
+            if tems == tsum:
+                s.append(range(i, j))
         return s
 
     def FindContinuousSequence3(self, tsum):
-        #存储temp sum 的双指针
+        # 存储temp sum 的双指针
         if tsum < 3:
             return []
         small = 1
         big = 2
-        middle = (tsum + 1) /2
+        middle = (tsum + 1) / 2
         curSum = small + big
         output = []
         while small < middle:
@@ -191,22 +278,21 @@ class Solution:
         :param tsum:
         :return:
         """
-        res=[]
-        if tsum <0:
+        res = []
+        if tsum < 0:
             return res
-        n=2
-        while (n*n+1<=2*tsum):
-            x0 = (2 *tsum + n - n ** 2) / (2 * n)
-            if math.floor(x0)==x0:
-                x0=math.floor(x0)
-                #那么这个就是要的答案
-                res.append(range(x0,x0+n))
-            n+=1
+        n = 2
+        while (n * n + 1 <= 2 * tsum):
+            x0 = (2 * tsum + n - n ** 2) / (2 * n)
+            if math.floor(x0) == x0:
+                x0 = math.floor(x0)
+                # 那么这个就是要的答案
+                res.append(range(x0, x0 + n))
+            n += 1
         res2 = []
         for item in range(len(res)):
             res2.append(res.pop())
         return res2
-
 
     def FindContinuousSequence(self, tsum):
         """
@@ -215,24 +301,25 @@ class Solution:
         :return:
         """
         # first ,get  the biggest n
-        max_n = 2 * tsum **0.5
-        res=[]
-        for i in range(2,math.floor(max_n)+1):
+        max_n = 2 * tsum ** 0.5
+        res = []
+        for i in range(2, math.floor(max_n) + 1):
 
-            tempres=[]
-            tempsum = i *(i+1) / 2
-            for ii in range(math.ceil(tsum/i)):
-                if tempsum+ii*i ==tsum:
+            tempres = []
+            tempsum = i * (i + 1) / 2
+            for ii in range(math.ceil(tsum / i)):
+                if tempsum + ii * i == tsum:
 
                     for iii in range(i):
-                        tempres.append(ii+iii+1)
+                        tempres.append(ii + iii + 1)
                     res.append(tempres)
 
-        res2=[]
+        res2 = []
         for item in range(len(res)):
             res2.append(res.pop())
         return res2
-    def depth(self,pRoot):
+
+    def depth(self, pRoot):
         """
         get the depth
         :param pRoot:
@@ -240,26 +327,24 @@ class Solution:
         """
         if not pRoot:
             return 0
-        return max(self.depth(pRoot.left),self.depth(pRoot.right))+1
+        return max(self.depth(pRoot.left), self.depth(pRoot.right)) + 1
 
-
-    def IsBalanced_Solution2(self,pRoot):
+    def IsBalanced_Solution2(self, pRoot):
         if not pRoot:
             return True
-        if abs(self.depth(pRoot.left)-self.depth(pRoot.right))>1:
+        if abs(self.depth(pRoot.left) - self.depth(pRoot.right)) > 1:
             return False
         return self.IsBalanced_Solution2(pRoot.left) and self.IsBalanced_Solution2(pRoot.right)
 
+    depths = []
 
-
-    depths=[]
-    def dfs(self,pRoot,depth):
+    def dfs(self, pRoot, depth):
         if not pRoot:
-            #this is leaf node
+            # this is leaf node
             self.depths.append(depth)
             return
-        self.dfs(pRoot.left,depth+1)
-        self.dfs(pRoot.right,depth+1)
+        self.dfs(pRoot.left, depth + 1)
+        self.dfs(pRoot.right, depth + 1)
 
     def IsBalanced_Solution(self, pRoot):
         """
@@ -269,29 +354,26 @@ class Solution:
         :param pRoot:
         :return:
         """
-        self.dfs(pRoot,0)
-        #determine the list of depth
+        self.dfs(pRoot, 0)
+        # determine the list of depth
         min_ = self.depths[0]
         max_ = self.depths[0]
         for item in self.depths:
             print(item)
-            min_=min(min_,item)
-            max_=max(max_,item)
-        if max_-min_>=2:
+            min_ = min(min_, item)
+            max_ = max(max_, item)
+        if max_ - min_ >= 2:
             return False
         else:
             return True
 
-
-
-    def bigger(self,num,list):
+    def bigger(self, num, list):
         print(list)
-        count=0
+        count = 0
         for item in list:
-            if item>num:
-                count+=1
+            if item > num:
+                count += 1
         return count
-
 
     def InversePairs(self, data):
         """
@@ -299,12 +381,12 @@ class Solution:
         :param data:
         :return:
         """
-        res=[]
-        for i,item in enumerate(data):
-            #遍历
-            #查找这个数之前，比这个数目大的,不行过滤器返回
-            res.append(self.bigger(item,data[0:i]))
-        return sum(res)%1000000007
+        res = []
+        for i, item in enumerate(data):
+            # 遍历
+            # 查找这个数之前，比这个数目大的,不行过滤器返回
+            res.append(self.bigger(item, data[0:i]))
+        return sum(res) % 1000000007
 
     def FirstNotRepeatingChar(self, s):
         """
