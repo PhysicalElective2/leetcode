@@ -18,6 +18,38 @@ class TreeLinkNode:
 
 
 class Solution:
+    def Print3(self, pRoot):
+        """
+        之字型打印,怎么就是不对呢，郁闷
+        真的不想用牛客网了
+        也没说明白，其实是要求返回二维数组
+        :param pRoot:
+        :return:
+        """
+        res=[]
+        if not pRoot:
+            return res
+        temp=[pRoot]
+        flag=True
+        while temp:
+            size=len(temp)
+            row=[]
+            if flag:
+                for i in range(size):
+                    row.append(temp[i].val)
+            else:
+                for i in range(size):
+                    row.append(temp[size - i - 1].val)
+            res.append(row)
+            flag=not flag
+            for i in range(size):
+                node=temp.pop(0)
+                if node.left:
+                    temp.append(node.left)
+                if node.right:
+                    temp.append(node.right)
+        return res
+
     def Print2(self,pRoot):
         """
         还是别人的办法好啊。。。

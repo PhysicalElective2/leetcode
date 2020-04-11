@@ -59,6 +59,7 @@ if __name__=="__main__":
     e.left = k
     e.right = l
     print(s.Print(a))
+    print(s.Print3(a))
 
     # for i in range(1,100):
     #     if(s.isUgly(i)):
