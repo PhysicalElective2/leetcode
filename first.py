@@ -18,6 +18,24 @@ class TreeLinkNode:
 
 
 class Solution:
+    def match(self,s,pattern):
+        if len(s)==0 and len(pattern)==0:
+            return True
+        if len(s)>0 and len(pattern)==0:
+            return False
+        if len(pattern) > 1 and pattern[1] == '*':
+            if s and (pattern[0]=='.'or s[0]==pattern[0]):
+                f1=self.match(s,pattern[2:])
+                f2=self.match(s[1:],pattern[2:])
+                f3=self.match(s[1:],pattern)
+                return  f1 or f2 or f3
+            else:
+                return self.match(s,pattern[2:])
+        elif s and (s[0]==pattern[0] or pattern[0]=='.'):
+            return self.match(s[1:],pattern[1:])
+        else:
+            return False
+
     def Print3(self, pRoot):
         """
         之字型打印,怎么就是不对呢，郁闷
@@ -184,7 +202,7 @@ class Solution:
             self.chr.append(char)
             self.count.append(1)
 
-    def match(self, s, pattern):
+    def match2(self, s, pattern):
         """
         字符串匹配
         模式中的字符'.'表示任意一个字符，而'*'表示它前面的字符可以出现任意次（包含0次）

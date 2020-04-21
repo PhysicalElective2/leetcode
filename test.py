@@ -3,9 +3,9 @@ from first import Solution, TreeNode
 if __name__=="__main__":
     s=Solution()
     num=0
-    #print(str(num) + " " + str(s.isUgly(num)))
-   # print(s.GetUglyNumber_Solution(num))
-    #print(s.GetUglyNumber_Solution2(num))
+    #  print(str(num) + " " + str(s.isUgly(num)))
+    #  print(s.GetUglyNumber_Solution(num))
+    # print(s.GetUglyNumber_Solution2(num))
 
 
     ss="googgle"
@@ -60,6 +60,7 @@ if __name__=="__main__":
     e.right = l
     print(s.Print(a))
     print(s.Print3(a))
+    print(s.match("aaa","aa.a"))
 
     # for i in range(1,100):
     #     if(s.isUgly(i)):
